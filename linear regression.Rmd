@@ -1,0 +1,131 @@
+---
+title: "Отчет"
+author: "Хаддад Некула"
+date: "26 мая 2020 г."
+output:
+  word_document:
+    toc: yes
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    toc: yes
+keep_tex: yes
+keep_markdown: yes
+header-includes:
+- \XeTeXdefaultencoding utf8
+- \usepackage{xltxtra}
+- \usepackage{fontspec}
+- \setmainfont{Times New Roman}
+- \setsansfont{Arial}
+- \setmonofont{Courier New}
+- \newfontfamily{\cyrillicfont}{Times New Roman}
+- \newfontfamily{\cyrillicfonttt}{Courier New}
+- \newfontfamily{\cyrillicfontsf}{Arial}
+- \usepackage[english,russian]{babel}
+---
+
+
+```YAML
+---
+output: 
+    pdf_document:
+        latex_engine: xelatex
+keep_tex: true        
+header-includes:
+   - \XeTeXdefaultencoding cp1251
+   - \usepackage{xltxtra}
+   - \usepackage{fontspec}
+   - \setmainfont{Times New Roman}
+   - \setsansfont{Arial}
+   - \setmonofont{Courier New}
+   - \newfontfamily{\cyrillicfont}{Times New Roman}
+   - \newfontfamily{\cyrillicfonttt}{Courier New} 
+   - \newfontfamily{\cyrillicfontsf}{Arial} 
+   - \usepackage[english,russian]{babel}
+---
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Задача 8.3  
+
+## Условие задачи
+
+**8.3**  На рис. 8.16 и в таблице под ним представлены результаты четырех экспериментов. Вычислите для каждого эксперимента коэффициенты линейной регрессии и коэффициент корреляции. В чем сходство и различие результатов экспериментов? Проверьте, выполняются ли условия применимости регрессионного анализа. 
+## Решение
+
+```{r, echo = FALSE}
+rm(list = ls())
+library("foreign")
+library("dplyr")
+library("ggplot2")
+library("labeling")
+library("digest")
+```
+Загрузка файла с данными
+```{r}
+my_data <- read.csv("C:/Users/79199/Desktop/New folder/haddad.csv")
+data1 <- select(my_data, x1, y1)
+data2 <- select(my_data, x2, y2)
+data3 <- select(my_data, x3, y3)
+data4 <- select(my_data, x4, y4)
+x1    <- data1$x1
+y1    <- data1$y1
+x2    <- data2$x2
+y2    <- data2$y2
+x3    <- data3$x3
+y3    <- data3$y3
+x4    <- data4$x4
+y4    <- data4$y4
+```
+вычислить для первого эксперимента коэффициенты линейной регрессии и коэффициент корреляции
+```{r}
+g1 <- ggplot(data1, aes(y = y1, x = x1)) + geom_point()
+g1
+
+mdl1 <- lm(data = data1, y1 ~ x1)
+mdl1
+summary(mdl1)
+g1 + stat_smooth(method = "lm")
+cor(x1, y1, method = c("pearson"))
+cor.test(x1, y1, method=c("pearson"))
+```
+вычислить для второго эксперимента коэффициенты линейной регрессии и коэффициент корреляции
+```{r}
+g2 <- ggplot(data2, aes(y = y2, x = x2)) + geom_point()
+g2
+
+mdl2 <- lm(data = data2, y2 ~ x2)
+mdl2
+summary(mdl2)
+g2 + stat_smooth(method = "lm")
+cor(x2, y2, method = c("pearson"))
+cor.test(x2, y2, method=c("pearson"))
+```
+вычислить для третьего эксперимента коэффициенты линейной регрессии и коэффициент корреляции
+```{r}
+g3 <- ggplot(data3, aes(y = y3, x = x3)) + geom_point()
+g3
+
+mdl3 <- lm(data = data3, y3 ~ x3)
+mdl3
+summary(mdl3)
+g3 + stat_smooth(method = "lm")
+cor(x3, y3, method = c("pearson"))
+cor.test(x3, y3, method=c("pearson"))
+```
+вычислить для четвёртого эксперимента коэффициенты линейной регрессии и коэффициент корреляции
+```{r}
+g4 <- ggplot(data4, aes(y = y4, x = x4)) + geom_point()
+g4
+
+mdl4 <- lm(data = data4, y4 ~ x4)
+mdl4
+summary(mdl4)
+g4 + stat_smooth(method = "lm")
+cor(x4, y4, method = c("pearson"))
+cor.test(x4, y4, method=c("pearson"))
+```
+выводы: коэффициенты корреляции почти одинаковые для всех экспериментов
